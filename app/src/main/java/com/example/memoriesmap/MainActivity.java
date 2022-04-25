@@ -9,10 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, FragmentsActions {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
+    private String backStack = "Back";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +36,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public FragmentTransaction createFragmentTransaction() {
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack(backStack);
         return fragmentTransaction;
     }
 
+    @Override
     public void openFragment(Fragment fragment) {
         createFragmentTransaction()
                 .replace(R.id.fragmentBody, fragment)
                 .commit();
     }
 
+    @Override
     public void openSettings() {
         createFragmentTransaction()
                 .replace(R.id.fragmentBody, new SettingsFragment())
