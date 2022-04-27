@@ -16,4 +16,5 @@ public class SettingsFragment extends PreferenceFragmentCompat implements View.O
     public void onClick(View view) {
 
     }
+
 }

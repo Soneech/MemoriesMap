@@ -1,8 +1,11 @@
 package com.example.memoriesmap;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -57,5 +60,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Log.d("RRR", "go back");
+                //NavUtils.navigateUpFromSameTask(this);
+                openFragment(new StartWindowFragment());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 }
