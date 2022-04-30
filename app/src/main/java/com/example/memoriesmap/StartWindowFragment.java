@@ -51,7 +51,7 @@ public class StartWindowFragment extends Fragment implements View.OnClickListene
                 fragmentsActions.openFragment(new AuthorizationFragment());
                 break;
             case R.id.openSettingsBtn:
-                fragmentsActions.openSettings();
+                fragmentsActions.openFragment(new SettingsFragment());
                 break;
         }
     }

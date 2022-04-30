@@ -1,7 +1,6 @@
 package com.example.memoriesmap;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -12,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, FragmentsActions {
+public class MainActivity extends AppCompatActivity implements FragmentsActions {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -23,17 +22,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         openFragment(new StartWindowFragment());
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.openSettingsBtn:
-                openSettings();
-                break;
-            default:
-                break;
-        }
     }
 
     public FragmentTransaction createFragmentTransaction() {
@@ -48,14 +36,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         createFragmentTransaction()
                 .replace(R.id.fragmentBody, fragment)
                 .commit();
-    }
-
-    @Override
-    public void openSettings() {
-        createFragmentTransaction()
-                .replace(R.id.fragmentBody, new SettingsFragment())
-                .commit();
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -66,10 +46,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Log.d("RRR", "go back");
                 //NavUtils.navigateUpFromSameTask(this);
-                openFragment(new StartWindowFragment());
-                return true;
+                //openFragment(new StartWindowFragment());
+                fragmentManager.popBackStack();
             default:
                 return super.onOptionsItemSelected(item);
         }
