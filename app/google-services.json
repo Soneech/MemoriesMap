@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "344207139819",
+    "project_id": "memoriesmap-777",
+    "storage_bucket": "memoriesmap-777.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344207139819:android:3f4f6cca3bdf96cbd16fae",
+        "android_client_info": {
+          "package_name": "com.example.memoriesmap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "344207139819-ov1sv3oc7qu159trke9a8m8ng7i4m9he.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM8GpJl-FyJT7n7Ylk2TZ4rkvatzbVHhY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "344207139819-ov1sv3oc7qu159trke9a8m8ng7i4m9he.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
