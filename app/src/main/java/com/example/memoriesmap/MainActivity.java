@@ -11,17 +11,28 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.memoriesmap.databinding.MainActivityBinding;
+
 public class MainActivity extends AppCompatActivity implements FragmentsActions {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private String backStack = "Back";
+    private MainActivityBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         openFragment(new StartWindowFragment());
+        binding = MainActivityBinding.inflate(getLayoutInflater());
+
+        binding.imageStartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // something
+            }
+        });
     }
 
     public FragmentTransaction createFragmentTransaction() {
@@ -33,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements FragmentsActions 
 
     @Override
     public void openFragment(Fragment fragment) {
+
         createFragmentTransaction()
                 .replace(R.id.fragmentBody, fragment)
                 .commit();
@@ -46,12 +58,9 @@ public class MainActivity extends AppCompatActivity implements FragmentsActions 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                //NavUtils.navigateUpFromSameTask(this);
-                //openFragment(new StartWindowFragment());
                 fragmentManager.popBackStack();
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
 }

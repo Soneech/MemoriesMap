@@ -12,5 +12,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></FrameLayout>
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/imageStartBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="#00FFFFFF"
+            app:srcCompat="@drawable/start_map_image"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
