@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,11 +24,19 @@ import android.widget.Toast;
 import com.example.memoriesmap.databinding.AuthorizationFragmentBinding;
 
 import com.example.memoriesmap.R;
+import com.example.memoriesmap.fragments.FragmentsActions;
 
 public class AuthorizationFragment extends Fragment {
 
     private LoginViewModel loginViewModel;
     private AuthorizationFragmentBinding binding;
+    private FragmentsActions fragmentsActions;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        fragmentsActions = (FragmentsActions) context;
+    }
 
     @Nullable
     @Override
@@ -36,8 +45,8 @@ public class AuthorizationFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         binding = AuthorizationFragmentBinding.inflate(inflater, container, false);
+        fragmentsActions.setDisplayHomeVisibility(true);
         return binding.getRoot();
-
     }
 
     @Override

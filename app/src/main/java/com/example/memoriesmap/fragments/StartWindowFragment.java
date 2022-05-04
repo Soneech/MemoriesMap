@@ -1,4 +1,4 @@
-package com.example.memoriesmap;
+package com.example.memoriesmap.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.memoriesmap.R;
 import com.example.memoriesmap.databinding.StartWindowFragmentBinding;
 import com.example.memoriesmap.ui.login.AuthorizationFragment;
 import com.example.memoriesmap.ui.login.RegistrationFragment;
@@ -32,6 +33,7 @@ public class StartWindowFragment extends Fragment implements View.OnClickListene
         binding.openRegistrationBtn.setOnClickListener(this);
         binding.openAuthorizationBtn.setOnClickListener(this);
         binding.openSettingsBtn.setOnClickListener(this);
+        fragmentsActions.setDisplayHomeVisibility(false);
         return binding.getRoot();
     }
 
