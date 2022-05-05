@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements FragmentsActions 
 
         openFragment(new StartWindowFragment());
         actionBar = getSupportActionBar();
+
     }
 
     public FragmentTransaction createFragmentTransaction() {
