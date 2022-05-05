@@ -12,6 +12,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.memoriesmap.fragments.FragmentsActions;
 import com.example.memoriesmap.fragments.StartWindowFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements FragmentsActions {
 
@@ -20,6 +22,8 @@ public class MainActivity extends AppCompatActivity implements FragmentsActions 
     private ActionBar actionBar;
     private String backStack = "Back";
 
+    private FirebaseUser currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +31,15 @@ public class MainActivity extends AppCompatActivity implements FragmentsActions 
 
         openFragment(new StartWindowFragment());
         actionBar = getSupportActionBar();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            //                                                   !!!!!!!!!!!!!!
+        }
     }
 
     public FragmentTransaction createFragmentTransaction() {

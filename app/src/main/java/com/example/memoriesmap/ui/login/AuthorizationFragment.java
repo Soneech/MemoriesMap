@@ -25,6 +25,7 @@ import com.example.memoriesmap.databinding.AuthorizationFragmentBinding;
 
 import com.example.memoriesmap.R;
 import com.example.memoriesmap.fragments.FragmentsActions;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class AuthorizationFragment extends Fragment {
 
@@ -32,10 +33,12 @@ public class AuthorizationFragment extends Fragment {
     private AuthorizationFragmentBinding binding;
     private FragmentsActions fragmentsActions;
 
+    private FirebaseAuth mAuth;
+
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        fragmentsActions = (FragmentsActions) context;
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Nullable
@@ -50,14 +53,20 @@ public class AuthorizationFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        fragmentsActions = (FragmentsActions) context;
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
-        final EditText usernameEditText = binding.usernameAuthView;
+        final EditText usernameEditText = binding.emailView;
         final EditText passwordEditText = binding.passwordView;
-        final Button loginButton = binding.loginBtn;
+        final Button loginButton = binding.registrationBtn;
 
 
         loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), new Observer<LoginFormState>() {
@@ -130,6 +139,12 @@ public class AuthorizationFragment extends Fragment {
             }
         });
     }
+
+    public void loginUser() {
+
+    }
+
+
 
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();

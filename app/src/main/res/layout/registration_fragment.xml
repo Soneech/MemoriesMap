@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/registrationTextView" />
 
     <EditText
-        android:id="@+id/usernameAuthView"
+        android:id="@+id/emailView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -59,7 +59,7 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameAuthView" />
+        app:layout_constraintTop_toBottomOf="@+id/emailView" />
 
     <EditText
         android:id="@+id/repeatPasswordView"
@@ -77,10 +77,11 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordView" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordView"
+        tools:ignore="TextContrastCheck" />
 
     <Button
-        android:id="@+id/loginBtn"
+        android:id="@+id/registrationBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"

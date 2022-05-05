@@ -11,13 +11,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,17 +24,26 @@ import com.example.memoriesmap.databinding.RegistrationFragmentBinding;
 
 import com.example.memoriesmap.R;
 import com.example.memoriesmap.fragments.FragmentsActions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
-public class RegistrationFragment extends Fragment {
+public class RegistrationFragment extends Fragment{
 
     private LoginViewModel loginViewModel;
     private RegistrationFragmentBinding binding;
     private FragmentsActions fragmentsActions;
 
+    private FirebaseAuth mAuth;
+
+    private String email;
+    private String password;
+
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        fragmentsActions = (FragmentsActions) context;
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Nullable
@@ -43,11 +51,16 @@ public class RegistrationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         binding = RegistrationFragmentBinding.inflate(inflater, container, false);
+
         fragmentsActions.setDisplayHomeVisibility(true);
         return binding.getRoot();
+    }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        fragmentsActions = (FragmentsActions) context;
     }
 
     @Override
@@ -56,22 +69,18 @@ public class RegistrationFragment extends Fragment {
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
-        final EditText usernameEditText = binding.usernameView;
-        final EditText passwordEditText = binding.passwordView;
-        final Button loginButton = binding.loginBtn;
-
         loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), new Observer<LoginFormState>() {
             @Override
             public void onChanged(@Nullable LoginFormState loginFormState) {
                 if (loginFormState == null) {
                     return;
                 }
-                loginButton.setEnabled(loginFormState.isDataValid());
+                binding.registrationBtn.setEnabled(loginFormState.isDataValid());
                 if (loginFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
+                    binding.usernameView.setError(getString(loginFormState.getUsernameError()));
                 }
                 if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
+                    binding.passwordView.setError(getString(loginFormState.getPasswordError()));
                 }
             }
         });
@@ -104,29 +113,53 @@ public class RegistrationFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                loginViewModel.loginDataChanged(binding.usernameView.getText().toString(),
+                        binding.passwordView.getText().toString());
             }
         };
-        usernameEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        binding.usernameView.addTextChangedListener(afterTextChangedListener);
+        binding.passwordView.addTextChangedListener(afterTextChangedListener);
+        binding.passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
+                    loginViewModel.login(binding.usernameView.getText().toString(),
+                            binding.passwordView.getText().toString());
                 }
                 return false;
             }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        binding.registrationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                createUser();
+                //loginViewModel.login(email, password);
+            }
+        });
+    }
+
+    public void createUser() {
+        email = binding.emailView.getText().toString();
+        password = binding.passwordView.getText().toString();
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(
+                            getActivity(),
+                            R.string.successful_registration_toast_text,
+                            Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(
+                            getActivity(),
+                            R.string.unsuccessful_registration_toast_text,
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

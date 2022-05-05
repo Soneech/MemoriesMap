@@ -40,4 +40,7 @@
     <string name="registration_text_view">Регистрация</string>
     <string name="authorization_text_view">Авторизация</string>
     <string name="authorization_checkbox_text">Запомнить меня</string>
+
+    <string name="successful_registration_toast_text">Регистрация прошла успешно</string>
+    <string name="unsuccessful_registration_toast_text">Не удалось зарегистрировать пользователя</string>
 </resources>
