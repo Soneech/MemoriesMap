@@ -33,8 +33,9 @@
     <string name="signup_btn_text">Зарегистрироваться</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome!"</string>
-    <string name="invalid_username">Некорректное имя</string>
-    <string name="invalid_password">Некорректный пароль</string>
+    <string name="invalid_username">Некорректное имя. Длина должна быть от 3 до 16 символов</string>
+    <string name="invalid_password">Некорректный пароль. Длина должна быть от 16 до 32 символов</string>
+    <string name="user_already_exist">Пользователь с такой почтой уже зарегистрирован</string>
     <string name="invalid_repeat_password">Пароли не совпадают</string>
     <string name="null_data_error">Все поля должны быть заполнены</string>
     <string name="login_failed">"Login failed"</string>

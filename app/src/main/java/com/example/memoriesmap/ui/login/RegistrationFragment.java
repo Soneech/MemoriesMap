@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,16 +32,13 @@ public class RegistrationFragment extends Fragment{
                              @Nullable Bundle savedInstanceState) {
         binding = RegistrationFragmentBinding.inflate(inflater, container, false);
         fragmentsActions.setDisplayHomeVisibility(true);
-        
         binding.registrationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (isDataNotNull()) {
-                    Log.d("RRR", "data not null");
                     startRegistration();
                 }
                 else {
-                    Log.d("RRR", "null data error");
                     nullDataError();
                 }
             }

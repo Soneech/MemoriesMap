@@ -13,13 +13,13 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class RegistrationModel {
 
-    private FirebaseAuth mAuth;
+    private final FirebaseAuth mAuth;
 
-    private String username;
-    private String email;
-    private String password;
-    private String repeatPassword;
-    private Activity context;
+    private final String username;
+    private final String email;
+    private final String password;
+    private final String repeatPassword;
+    private final Activity context;
 
     private final int usernameMinLength = 3;
     private final int usernameMaxLength = 16;
@@ -27,10 +27,7 @@ public class RegistrationModel {
     private final int passwordMinLength = 16;
     private final int passwordMaxLength = 32;
 
-    private final String invalidUsername =
-            R.string.invalid_username + ". Длина должна быть от " + usernameMinLength + " до " + usernameMaxLength;
-    private final String invalidPassword =
-            R.string.invalid_password + ". Длина должна быть от " + passwordMinLength + " до " + passwordMaxLength;
+    private final String invalidEmailExceptionMessage = "The email address is already in use by another account.";
 
     public RegistrationModel(String username, String email, String password, String repeatPassword, Activity context) {
         this.username = username;
@@ -43,11 +40,11 @@ public class RegistrationModel {
 
     public boolean isDataValid() {
         if (!(username.length() >= usernameMinLength && username.length() <= usernameMaxLength)) {
-            Toast.makeText(context, invalidUsername, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.invalid_username, Toast.LENGTH_LONG).show();
             return false;
         }
         if (!(password.length() >= passwordMinLength && password.length() <= passwordMaxLength)) {
-            Toast.makeText(context, invalidPassword, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.invalid_password, Toast.LENGTH_LONG).show();
             return false;
         }
         if (!password.equals(repeatPassword)) {
@@ -68,11 +65,16 @@ public class RegistrationModel {
                             Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(
-                            context,
-                            R.string.unsuccessful_registration_toast_text,
-                            Toast.LENGTH_LONG).show();
-                }
+                    String exception = task.getException().getMessage();
+                    if (exception.equals(invalidEmailExceptionMessage)) {
+                        Toast.makeText(context, R.string.user_already_exist, Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(
+                                context,
+                                R.string.unsuccessful_registration_toast_text,
+                                Toast.LENGTH_LONG).show();
+                    }                }
             }
         });
     }
