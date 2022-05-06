@@ -35,6 +35,10 @@ public class AuthorizationFragment extends Fragment {
 
     private FirebaseAuth mAuth;
 
+    private String email;
+    private String password;
+    private boolean rememberMe;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +68,9 @@ public class AuthorizationFragment extends Fragment {
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
-        final EditText usernameEditText = binding.emailView;
+        final EditText emailEditText = binding.emailView;
         final EditText passwordEditText = binding.passwordView;
-        final Button loginButton = binding.registrationBtn;
+        final Button authorizationBtn = binding.authorizationBtn;
 
 
         loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), new Observer<LoginFormState>() {
@@ -75,9 +79,9 @@ public class AuthorizationFragment extends Fragment {
                 if (loginFormState == null) {
                     return;
                 }
-                loginButton.setEnabled(loginFormState.isDataValid());
+                authorizationBtn.setEnabled(loginFormState.isDataValid());
                 if (loginFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
+                    emailEditText.setError(getString(loginFormState.getUsernameError()));
                 }
                 if (loginFormState.getPasswordError() != null) {
                     passwordEditText.setError(getString(loginFormState.getPasswordError()));
@@ -113,29 +117,30 @@ public class AuthorizationFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
+                loginViewModel.loginDataChanged(emailEditText.getText().toString(),
                         passwordEditText.getText().toString());
             }
         };
-        usernameEditText.addTextChangedListener(afterTextChangedListener);
+        emailEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getText().toString(),
+                    loginViewModel.login(emailEditText.getText().toString(),
                             passwordEditText.getText().toString());
                 }
                 return false;
             }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        authorizationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+//                loginViewModel.login(usernameEditText.getText().toString(),
+//                        passwordEditText.getText().toString());
+                loginUser();
             }
         });
     }

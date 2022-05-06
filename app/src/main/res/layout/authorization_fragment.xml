@@ -19,7 +19,7 @@
         android:layout_marginTop="64dp"
         android:layout_marginEnd="24dp"
         android:autofillHints="no"
-        android:hint="@string/prompt_username"
+        android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
         android:selectAllOnFocus="true"
@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/emailView" />
 
     <Button
-        android:id="@+id/registrationBtn"
+        android:id="@+id/authorizationBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
@@ -77,7 +77,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/rememberMeCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"

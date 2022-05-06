@@ -33,14 +33,16 @@
     <string name="signup_btn_text">Зарегистрироваться</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome!"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_username">Некорректное имя</string>
+    <string name="invalid_password">Некорректный пароль</string>
+    <string name="invalid_repeat_password">Пароли не совпадают</string>
     <string name="login_failed">"Login failed"</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="registration_text_view">Регистрация</string>
     <string name="authorization_text_view">Авторизация</string>
     <string name="authorization_checkbox_text">Запомнить меня</string>
 
+    <!-- Strings related to registration -->
     <string name="successful_registration_toast_text">Регистрация прошла успешно</string>
     <string name="unsuccessful_registration_toast_text">Не удалось зарегистрировать пользователя</string>
 </resources>
