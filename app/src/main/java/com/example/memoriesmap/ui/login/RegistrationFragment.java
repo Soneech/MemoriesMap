@@ -11,7 +11,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +51,6 @@ public class RegistrationFragment extends Fragment{
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = RegistrationFragmentBinding.inflate(inflater, container, false);
-
         fragmentsActions.setDisplayHomeVisibility(true);
         return binding.getRoot();
     }
@@ -72,9 +70,9 @@ public class RegistrationFragment extends Fragment{
         loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), new Observer<LoginFormState>() {
             @Override
             public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
+                if (loginFormState == null)
                     return;
-                }
+
                 binding.registrationBtn.setEnabled(loginFormState.isDataValid());
                 if (loginFormState.getUsernameError() != null) {
                     binding.usernameView.setError(getString(loginFormState.getUsernameError()));

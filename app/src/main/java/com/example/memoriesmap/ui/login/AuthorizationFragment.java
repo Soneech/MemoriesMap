@@ -66,7 +66,7 @@ public class AuthorizationFragment extends Fragment {
 
         final EditText usernameEditText = binding.emailView;
         final EditText passwordEditText = binding.passwordView;
-        final Button loginButton = binding.registrationBtn;
+        final Button loginButton = binding.authorizationBtn;
 
 
         loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), new Observer<LoginFormState>() {
@@ -143,8 +143,6 @@ public class AuthorizationFragment extends Fragment {
     public void loginUser() {
 
     }
-
-
 
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
