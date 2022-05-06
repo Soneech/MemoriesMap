@@ -36,6 +36,7 @@
     <string name="invalid_username">Некорректное имя</string>
     <string name="invalid_password">Некорректный пароль</string>
     <string name="invalid_repeat_password">Пароли не совпадают</string>
+    <string name="null_data_error">Все поля должны быть заполнены</string>
     <string name="login_failed">"Login failed"</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="registration_text_view">Регистрация</string>

@@ -28,9 +28,9 @@ public class RegistrationModel {
     private final int passwordMaxLength = 32;
 
     private final String invalidUsername =
-            ". Имя должно иметь длину от " + usernameMinLength + " до " + usernameMaxLength;
+            R.string.invalid_username + ". Длина должна быть от " + usernameMinLength + " до " + usernameMaxLength;
     private final String invalidPassword =
-            ". Пароль должен иметь длину от " + passwordMinLength + " до " + passwordMaxLength;
+            R.string.invalid_password + ". Длина должна быть от " + passwordMinLength + " до " + passwordMaxLength;
 
     public RegistrationModel(String username, String email, String password, String repeatPassword, Activity context) {
         this.username = username;
@@ -43,11 +43,11 @@ public class RegistrationModel {
 
     public boolean isDataValid() {
         if (!(username.length() >= usernameMinLength && username.length() <= usernameMaxLength)) {
-            Toast.makeText(context, R.string.invalid_username + invalidUsername, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, invalidUsername, Toast.LENGTH_LONG).show();
             return false;
         }
         if (!(password.length() >= passwordMinLength && password.length() <= passwordMaxLength)) {
-            Toast.makeText(context, R.string.invalid_password + invalidPassword, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, invalidPassword, Toast.LENGTH_LONG).show();
             return false;
         }
         if (!password.equals(repeatPassword)) {

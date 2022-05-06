@@ -6,10 +6,13 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.memoriesmap.R;
 import com.example.memoriesmap.databinding.RegistrationFragmentBinding;
 import com.example.memoriesmap.fragments.FragmentsActions;
 
@@ -30,6 +33,20 @@ public class RegistrationFragment extends Fragment{
                              @Nullable Bundle savedInstanceState) {
         binding = RegistrationFragmentBinding.inflate(inflater, container, false);
         fragmentsActions.setDisplayHomeVisibility(true);
+        
+        binding.registrationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isDataNotNull()) {
+                    Log.d("RRR", "data not null");
+                    startRegistration();
+                }
+                else {
+                    Log.d("RRR", "null data error");
+                    nullDataError();
+                }
+            }
+        });
         return binding.getRoot();
     }
 
@@ -39,28 +56,34 @@ public class RegistrationFragment extends Fragment{
         fragmentsActions = (FragmentsActions) context;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public boolean isDataNotNull() {
+        if (binding.usernameEditText.getText().length() != 0
+        && binding.emailEditText.getText().length() != 0
+        && binding.passwordEditText.getText().length() != 0
+        && binding.repeatPasswordEditText.getText().length() != 0) {
+            return true;
+        }
+        return false;
+    }
 
-        binding.registrationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String username = binding.usernameEditText.getText().toString();
-                final String email = binding.emailEditText.getText().toString();
-                final String password = binding.passwordEditText.getText().toString();
-                final String repeatPassword = binding.repeatPasswordEditText.getText().toString();
+    public void nullDataError() {
+        Toast.makeText(getActivity(), R.string.null_data_error, Toast.LENGTH_LONG).show();
+    }
 
-                RegistrationModel registrationModel = new RegistrationModel(
-                        username,
-                        email,
-                        password,
-                        repeatPassword,
-                        getActivity());
-                if (registrationModel.isDataValid()) {
-                    registrationModel.createUser();
-                }
-            }
-        });
+    public void startRegistration() {
+        final String username = binding.usernameEditText.getText().toString();
+        final String email = binding.emailEditText.getText().toString();
+        final String password = binding.passwordEditText.getText().toString();
+        final String repeatPassword = binding.repeatPasswordEditText.getText().toString();
+
+        RegistrationModel registrationModel = new RegistrationModel(
+                username,
+                email,
+                password,
+                repeatPassword,
+                getActivity());
+        if (registrationModel.isDataValid()) {
+            registrationModel.createUser();
+        }
     }
 }
