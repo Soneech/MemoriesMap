@@ -12,7 +12,7 @@
     tools:context=".ui.login.AuthorizationFragment">
 
     <EditText
-        android:id="@+id/emailView"
+        android:id="@+id/authEmailEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/authorizationTextView" />
 
     <EditText
-        android:id="@+id/passwordView"
+        android:id="@+id/authPasswordEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -43,7 +43,7 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailView" />
+        app:layout_constraintTop_toBottomOf="@+id/authEmailEditText" />
 
     <Button
         android:id="@+id/authorizationBtn"
@@ -55,14 +55,13 @@
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="64dp"
         android:backgroundTint="@color/lilac"
-        android:enabled="false"
         android:text="@string/login_btn_text"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordView"
+        app:layout_constraintTop_toBottomOf="@+id/authPasswordEditText"
         app:layout_constraintVertical_bias="0.358" />
 
     <TextView
@@ -84,6 +83,6 @@
         android:layout_marginTop="12dp"
         android:text="@string/authorization_checkbox_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordView" />
+        app:layout_constraintTop_toBottomOf="@+id/authPasswordEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

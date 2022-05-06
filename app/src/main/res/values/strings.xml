@@ -32,13 +32,13 @@
     <string name="login_btn_text">Войти</string>
     <string name="signup_btn_text">Зарегистрироваться</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome!"</string>
+    <string name="welcome">Добро пожаловать в Memories Map!</string>
     <string name="invalid_username">Некорректное имя. Длина должна быть от 3 до 16 символов</string>
     <string name="invalid_password">Некорректный пароль. Длина должна быть от 16 до 32 символов</string>
     <string name="user_already_exist">Пользователь с такой почтой уже зарегистрирован</string>
     <string name="invalid_repeat_password">Пароли не совпадают</string>
     <string name="null_data_error">Все поля должны быть заполнены</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="user_doesnt_exist">Такой пользователь не найден</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="registration_text_view">Регистрация</string>
     <string name="authorization_text_view">Авторизация</string>
