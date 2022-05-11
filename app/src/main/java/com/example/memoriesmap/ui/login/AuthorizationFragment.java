@@ -10,16 +10,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
+import com.example.memoriesmap.R;
 import com.example.memoriesmap.databinding.AuthorizationFragmentBinding;
 import com.example.memoriesmap.fragments.FragmentsActions;
 import com.example.memoriesmap.fragments.MainWindowFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class AuthorizationFragment extends Fragment {
 
     private AuthorizationFragmentBinding binding;
     private FragmentsActions fragmentsActions;
+    private FirebaseAuth mAuth;
 
     private String email;
     private String password;
@@ -28,6 +35,7 @@ public class AuthorizationFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Nullable
@@ -40,7 +48,7 @@ public class AuthorizationFragment extends Fragment {
         binding.authorizationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createAuthorizationModel();
+                signIn();
             }
         });
 
@@ -54,26 +62,23 @@ public class AuthorizationFragment extends Fragment {
         fragmentsActions = (FragmentsActions) context;
     }
 
-    public void createAuthorizationModel() {
+    public void signIn() {
         email = binding.authEmailEditText.getText().toString();
         password = binding.authPasswordEditText.getText().toString();
         rememberMe = binding.rememberMeCheckBox.isChecked();
 
-        AuthorizationModel authorizationModel = new AuthorizationModel(
-                email,
-                password,
-                rememberMe,
-                getActivity());
-        authorizationModel.signIn();
-        Log.d("RR2", String.valueOf(authorizationModel.isUserExist()));
-        if (authorizationModel.isUserExist()) {
-            Log.d("RRR", "sign in");
-            fragmentsActions.openFragment(new MainWindowFragment());
-            updateUI();
-        }
-    }
-
-    public void updateUI() {
-        // something actions...
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getActivity(), R.string.welcome, Toast.LENGTH_SHORT).show();
+                    fragmentsActions.openFragment(new MainWindowFragment());
+                }
+                else {
+                    Log.d("RRR", task.getException().getMessage().toString());
+                    Toast.makeText(getActivity(), R.string.user_doesnt_exist, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }

@@ -17,15 +17,34 @@ import com.example.memoriesmap.R;
 import com.example.memoriesmap.databinding.RegistrationFragmentBinding;
 import com.example.memoriesmap.fragments.FragmentsActions;
 import com.example.memoriesmap.fragments.MainWindowFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class RegistrationFragment extends Fragment{
 
     private RegistrationFragmentBinding binding;
     private FragmentsActions fragmentsActions;
+    private FirebaseAuth mAuth;
+
+    private String email;
+    private String username;
+    private String password;
+    private String repeatPassword;
+
+    private final int usernameMinLength = 3;
+    private final int usernameMaxLength = 16;
+
+    private final int passwordMinLength = 16;
+    private final int passwordMaxLength = 32;
+
+    private final String invalidEmailExceptionMessage = "The email address is already in use by another account.";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Nullable
@@ -39,7 +58,9 @@ public class RegistrationFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 if (isDataNotNull()) {
-                    startRegistration();
+                    setData();
+                    if (isDataValid())
+                        signUp();
                 }
                 else {
                     nullDataError();
@@ -69,23 +90,54 @@ public class RegistrationFragment extends Fragment{
         Toast.makeText(getActivity(), R.string.null_data_error, Toast.LENGTH_LONG).show();
     }
 
-    public void startRegistration() {
-        final String username = binding.usernameEditText.getText().toString();
-        final String email = binding.emailEditText.getText().toString();
-        final String password = binding.passwordEditText.getText().toString();
-        final String repeatPassword = binding.repeatPasswordEditText.getText().toString();
+    public void setData() {
+        username = binding.usernameEditText.getText().toString();
+        email = binding.emailEditText.getText().toString();
+        password = binding.passwordEditText.getText().toString();
+        repeatPassword = binding.repeatPasswordEditText.getText().toString();
+    }
 
-        RegistrationModel registrationModel = new RegistrationModel(
-                username,
-                email,
-                password,
-                repeatPassword,
-                getActivity());
-        if (registrationModel.isDataValid()) {
-            if (registrationModel.createUser()) {
-                fragmentsActions.openFragment(new MainWindowFragment());
-                Log.d("RRR", "create user");
-            }
+    public boolean isDataValid() {
+        if (!(username.length() >= usernameMinLength && username.length() <= usernameMaxLength)) {
+            Toast.makeText(getActivity(), R.string.invalid_username, Toast.LENGTH_LONG).show();
+            return false;
         }
+        if (!(password.length() >= passwordMinLength && password.length() <= passwordMaxLength)) {
+            Toast.makeText(getActivity(), R.string.invalid_password, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (!password.equals(repeatPassword)) {
+            Toast.makeText(getActivity(), R.string.invalid_repeat_password, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    public void signUp() {
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(
+                            getActivity(),
+                            R.string.successful_registration_toast_text,
+                            Toast.LENGTH_SHORT).show();
+                    fragmentsActions.openFragment(new AuthorizationFragment());
+
+                }
+                else {
+                    String exception = task.getException().getMessage();
+                    if (exception.equals(invalidEmailExceptionMessage)) {
+                        Toast.makeText(getActivity(), R.string.user_already_exist, Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(
+                                getActivity(),
+                                R.string.unsuccessful_registration_toast_text,
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
     }
 }
