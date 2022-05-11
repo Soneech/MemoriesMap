@@ -3,9 +3,11 @@ package com.example.memoriesmap.ui.login;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import com.example.memoriesmap.R;
 import com.example.memoriesmap.databinding.RegistrationFragmentBinding;
 import com.example.memoriesmap.fragments.FragmentsActions;
+import com.example.memoriesmap.fragments.MainWindowFragment;
 
 public class RegistrationFragment extends Fragment{
 
@@ -79,7 +82,10 @@ public class RegistrationFragment extends Fragment{
                 repeatPassword,
                 getActivity());
         if (registrationModel.isDataValid()) {
-            registrationModel.createUser();
+            if (registrationModel.createUser()) {
+                fragmentsActions.openFragment(new MainWindowFragment());
+                Log.d("RRR", "create user");
+            }
         }
     }
 }

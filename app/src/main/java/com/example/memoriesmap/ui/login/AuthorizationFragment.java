@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.memoriesmap.databinding.AuthorizationFragmentBinding;
 import com.example.memoriesmap.fragments.FragmentsActions;
+import com.example.memoriesmap.fragments.MainWindowFragment;
 
 public class AuthorizationFragment extends Fragment {
 
@@ -62,7 +64,11 @@ public class AuthorizationFragment extends Fragment {
                 password,
                 rememberMe,
                 getActivity());
-        if (authorizationModel.signIn()) {
+        authorizationModel.signIn();
+        Log.d("RR2", String.valueOf(authorizationModel.isUserExist()));
+        if (authorizationModel.isUserExist()) {
+            Log.d("RRR", "sign in");
+            fragmentsActions.openFragment(new MainWindowFragment());
             updateUI();
         }
     }

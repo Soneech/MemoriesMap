@@ -1,6 +1,7 @@
 package com.example.memoriesmap.ui.login;
 
 import android.app.Activity;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class AuthorizationModel {
+    private boolean isUserExist;
 
     private String email;
     private String password;
@@ -25,23 +27,32 @@ public class AuthorizationModel {
         this.password = password;
         this.rememberMe = rememberMe;
         this.context = context;
+        this.isUserExist = false;
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public boolean signIn() {
-        final boolean[] isUserExist = {false};
+    public void setUserExist(boolean userExist) {
+        isUserExist = userExist;
+    }
+
+    public boolean isUserExist() {
+        return isUserExist;
+    }
+
+    public void signIn() {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    setUserExist(true);
                     Toast.makeText(context, R.string.welcome, Toast.LENGTH_SHORT).show();
-                    isUserExist[0] = true;
+                    Log.d("set", String.valueOf(isUserExist()));
                 }
                 else {
+                    setUserExist(false);
                     Toast.makeText(context, R.string.user_doesnt_exist, Toast.LENGTH_LONG).show();
                 }
             }
         });
-        return isUserExist[0];
     }
 }

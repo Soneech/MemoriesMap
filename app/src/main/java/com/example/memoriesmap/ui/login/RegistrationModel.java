@@ -1,6 +1,7 @@
 package com.example.memoriesmap.ui.login;
 
 import android.app.Activity;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -54,7 +55,9 @@ public class RegistrationModel {
         return true;
     }
 
-    public void createUser() {
+    public boolean createUser() {
+        boolean[] result = new boolean[1];
+        result[0] = false;
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -63,6 +66,7 @@ public class RegistrationModel {
                             context,
                             R.string.successful_registration_toast_text,
                             Toast.LENGTH_SHORT).show();
+                    result[0] = true;
                 }
                 else {
                     String exception = task.getException().getMessage();
@@ -74,8 +78,11 @@ public class RegistrationModel {
                                 context,
                                 R.string.unsuccessful_registration_toast_text,
                                 Toast.LENGTH_LONG).show();
-                    }                }
+                    }
+                    result[0] = false;
+                }
             }
         });
+        return result[0];
     }
 }
