@@ -47,4 +47,8 @@
     <!-- Strings related to registration -->
     <string name="successful_registration_toast_text">Регистрация прошла успешно</string>
     <string name="unsuccessful_registration_toast_text">Не удалось зарегистрировать пользователя</string>
+    <string name="profile">Профиль</string>
+    <string name="peoples">Пользователи</string>
+    <string name="map">Карта</string>
+    <string name="settings">Настройки</string>
 </resources>
