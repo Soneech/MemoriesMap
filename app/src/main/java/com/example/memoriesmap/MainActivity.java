@@ -1,75 +1,53 @@
 package com.example.memoriesmap;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.memoriesmap.fragments.FragmentsActions;
-import com.example.memoriesmap.fragments.StartWindowFragment;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.memoriesmap.databinding.MainActivityBinding;
+import com.example.memoriesmap.main.SettingsFragment;
 
-public class MainActivity extends AppCompatActivity implements FragmentsActions {
+public class MainActivity extends AppCompatActivity implements FragmentsActions{
 
+    private MainActivityBinding binding;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private ActionBar actionBar;
-    private String backStack = "Back";
-
-    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        binding = MainActivityBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        openFragment(new StartWindowFragment());
-        actionBar = getSupportActionBar();
-    }
+        binding.bottomNavigationView2.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.settings:
+                    openFragment(R.id.mainFragmentBody, new SettingsFragment());
+            }
+            return true;
+        });
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            //                                                   !!!!!!!!!!!!!!
-        }
     }
 
     public FragmentTransaction createFragmentTransaction() {
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.addToBackStack(backStack);
+        fragmentTransaction.addToBackStack(null);
         return fragmentTransaction;
     }
 
     @Override
-    public void openFragment(Fragment fragment) {
+    public void openFragment(int fragmentBodyLayoutID, Fragment fragment) {
         createFragmentTransaction()
-                .replace(R.id.fragmentBody, fragment)
+                .replace(fragmentBodyLayoutID, fragment)
                 .commit();
-
     }
 
     @Override
     public void setDisplayHomeVisibility(boolean status) {
-        if (actionBar != null)
-            actionBar.setDisplayHomeAsUpEnabled(status);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                fragmentManager.popBackStack();
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 }

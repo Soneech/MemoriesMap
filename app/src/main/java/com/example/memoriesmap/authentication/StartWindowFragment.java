@@ -1,4 +1,4 @@
-package com.example.memoriesmap.fragments;
+package com.example.memoriesmap.authentication;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,10 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.memoriesmap.FragmentsActions;
 import com.example.memoriesmap.R;
 import com.example.memoriesmap.databinding.StartWindowFragmentBinding;
-import com.example.memoriesmap.ui.login.AuthorizationFragment;
-import com.example.memoriesmap.ui.login.RegistrationFragment;
+import com.example.memoriesmap.main.SettingsFragment;
 
 public class StartWindowFragment extends Fragment implements View.OnClickListener{
 
@@ -47,13 +47,13 @@ public class StartWindowFragment extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.openRegistrationBtn:
-                fragmentsActions.openFragment(new RegistrationFragment());
+                fragmentsActions.openFragment(R.id.authenticationFragmentBody, new RegistrationFragment());
                 break;
             case R.id.openAuthorizationBtn:
-                fragmentsActions.openFragment(new AuthorizationFragment());
+                fragmentsActions.openFragment(R.id.authenticationFragmentBody, new AuthorizationFragment());
                 break;
             case R.id.openSettingsBtn:
-                fragmentsActions.openFragment(new SettingsFragment());
+                fragmentsActions.openFragment(R.id.authenticationFragmentBody, new SettingsFragment());
                 break;
         }
     }

@@ -1,4 +1,4 @@
-package com.example.memoriesmap.fragments;
+package com.example.memoriesmap.main;
 
 import android.os.Bundle;
 

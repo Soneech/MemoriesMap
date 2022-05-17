@@ -1,4 +1,4 @@
-package com.example.memoriesmap.fragments;
+package com.example.memoriesmap.main;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.example.memoriesmap.R;
+import com.example.memoriesmap.FragmentsActions;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
