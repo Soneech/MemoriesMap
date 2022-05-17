@@ -5,7 +5,8 @@
     android:id="@+id/mainWindowLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    android:background="@color/lilac3"
+    tools:context=".MainActivity">
 
     <FrameLayout
         android:id="@+id/mainFragmentBody"
@@ -24,6 +25,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_navigation_menu"/>
+        app:menu="@menu/bottom_navigation_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
