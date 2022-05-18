@@ -10,11 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.memoriesmap.R;
 
-public class MainWindowFragment extends Fragment {
-
-    public MainWindowFragment() {
-
-    }
+public class NotesListFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,6 +20,6 @@ public class MainWindowFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.main_window_fragment, container, false);
+        return inflater.inflate(R.layout.notes_list_fragment, container, false);
     }
 }

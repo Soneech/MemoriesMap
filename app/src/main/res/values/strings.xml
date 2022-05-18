@@ -4,7 +4,7 @@
     <string name="title_activity_settings">SettingsActivity</string>
 
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
+    <string name="notes_header">Notes</string>
     <string name="sync_header">Sync</string>
 
     <!-- Messages Preferences -->
@@ -48,7 +48,7 @@
     <string name="successful_registration_toast_text">Регистрация прошла успешно</string>
     <string name="unsuccessful_registration_toast_text">Не удалось зарегистрировать пользователя</string>
     <string name="profile">Профиль</string>
-    <string name="peoples">Пользователи</string>
+    <string name="notes">Все заметки</string>
     <string name="map">Карта</string>
     <string name="settings">Настройки</string>
     <string name="title_activity_main">MainActivity</string>
