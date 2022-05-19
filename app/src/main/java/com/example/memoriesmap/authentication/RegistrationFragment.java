@@ -14,19 +14,28 @@ import android.widget.Toast;
 import com.example.memoriesmap.FragmentsActions;
 import com.example.memoriesmap.R;
 import com.example.memoriesmap.databinding.RegistrationFragmentBinding;
+import com.example.memoriesmap.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegistrationFragment extends Fragment{
 
     private RegistrationFragmentBinding binding;
     private FragmentsActions fragmentsActions;
-    private FirebaseAuth mAuth;
 
-    private String email;
+    private FirebaseAuth auth;
+    private FirebaseDatabase database;
+    private DatabaseReference users;
+
+    private final String usersDatabaseName = "Users";
+
     private String username;
+    private String email;
     private String password;
     private String repeatPassword;
 
@@ -41,7 +50,9 @@ public class RegistrationFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        users = database.getReference(usersDatabaseName);
     }
 
     @Nullable
@@ -111,16 +122,17 @@ public class RegistrationFragment extends Fragment{
     }
 
     public void signUp() {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    User user = new User(username, email, password);
+                    users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
                     Toast.makeText(
                             getActivity(),
                             R.string.successful_registration_toast_text,
                             Toast.LENGTH_SHORT).show();
                     fragmentsActions.openFragment(R.id.authenticationFragmentBody, new AuthorizationFragment());
-
                 }
                 else {
                     String exception = task.getException().getMessage();

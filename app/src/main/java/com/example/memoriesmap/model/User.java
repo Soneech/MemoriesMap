@@ -1,16 +1,18 @@
 package com.example.memoriesmap.model;
 
+import java.util.ArrayList;
+
 public class User {
     private String name;
     private String email;
     private String password;
-    private Note[] notes;
+    private ArrayList<Note> notes;
 
-    public User(String name, String email, String password, Note[] notes) {
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.notes = notes;
+        this.notes = new ArrayList<>();
     }
 
     public String getName() {
@@ -37,11 +39,11 @@ public class User {
         this.password = password;
     }
 
-    public Note[] getNotes() {
+    public ArrayList<Note> getNotes() {
         return notes;
     }
 
-    public void setNotes(Note[] notes) {
+    public void setNotes(ArrayList<Note> notes) {
         this.notes = notes;
     }
 }
