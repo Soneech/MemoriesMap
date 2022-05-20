@@ -1,8 +1,8 @@
 package com.example.memoriesmap;
 
+import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -14,12 +14,11 @@ import com.example.memoriesmap.main.NotesListFragment;
 import com.example.memoriesmap.main.ProfileFragment;
 import com.example.memoriesmap.main.SettingsFragment;
 
-public class MainActivity extends AppCompatActivity implements FragmentsActions{
+public class MainActivity extends AppCompatActivity implements NavigationActions {
 
     private MainActivityBinding binding;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +28,6 @@ public class MainActivity extends AppCompatActivity implements FragmentsActions{
 
 
         openFragment(R.id.mainFragmentBody, new ProfileFragment());
-//        actionBar = getSupportActionBar();
-//        actionBar.show();
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -66,6 +63,13 @@ public class MainActivity extends AppCompatActivity implements FragmentsActions{
         createFragmentTransaction()
                 .replace(fragmentBodyLayoutID, fragment)
                 .commit();
+    }
+
+    @Override
+    public void goToOtherActivity() {
+        Intent intent = new Intent(this, AuthenticationActivity.class);
+        this.finish();
+        startActivity(intent);
     }
 
     @Override

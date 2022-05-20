@@ -1,6 +1,8 @@
 package com.example.memoriesmap;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -14,7 +16,7 @@ import com.example.memoriesmap.authentication.StartWindowFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class AuthenticationActivity extends AppCompatActivity implements FragmentsActions {
+public class AuthenticationActivity extends AppCompatActivity implements NavigationActions {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -27,16 +29,15 @@ public class AuthenticationActivity extends AppCompatActivity implements Fragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authentication_activity);
 
-        openFragment(R.id.authenticationFragmentBody, new StartWindowFragment());
-        actionBar = getSupportActionBar();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();  //    ПОЧИНИТЬ
         if (currentUser != null) {
-            //                                                   !!!!!!!!!!!!!!
+            Log.d("RRR", "go to auth activity1");
+            goToOtherActivity();
+        }
+        else {
+            Log.d("RRR", "go to auth activity2");
+            actionBar = getSupportActionBar();
+            openFragment(R.id.authenticationFragmentBody, new StartWindowFragment());
         }
     }
 
@@ -53,6 +54,13 @@ public class AuthenticationActivity extends AppCompatActivity implements Fragmen
                 .replace(fragmentBodyLayoutID, fragment)
                 .commit();
 
+    }
+
+    @Override
+    public void goToOtherActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        this.finish();
+        startActivity(intent);
     }
 
     @Override

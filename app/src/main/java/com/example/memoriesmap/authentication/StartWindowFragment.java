@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.memoriesmap.FragmentsActions;
+import com.example.memoriesmap.NavigationActions;
 import com.example.memoriesmap.R;
 import com.example.memoriesmap.databinding.StartWindowFragmentBinding;
 import com.example.memoriesmap.main.SettingsFragment;
@@ -19,7 +19,7 @@ import com.example.memoriesmap.main.SettingsFragment;
 public class StartWindowFragment extends Fragment implements View.OnClickListener{
 
     private StartWindowFragmentBinding binding;
-    private FragmentsActions fragmentsActions;
+    private NavigationActions navigationActions;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,27 +33,27 @@ public class StartWindowFragment extends Fragment implements View.OnClickListene
         binding.openRegistrationBtn.setOnClickListener(this);
         binding.openAuthorizationBtn.setOnClickListener(this);
         binding.openSettingsBtn.setOnClickListener(this);
-        fragmentsActions.setDisplayHomeVisibility(false);
+        navigationActions.setDisplayHomeVisibility(false);
         return binding.getRoot();
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        fragmentsActions = (FragmentsActions) context;
+        navigationActions = (NavigationActions) context;
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.openRegistrationBtn:
-                fragmentsActions.openFragment(R.id.authenticationFragmentBody, new RegistrationFragment());
+                navigationActions.openFragment(R.id.authenticationFragmentBody, new RegistrationFragment());
                 break;
             case R.id.openAuthorizationBtn:
-                fragmentsActions.openFragment(R.id.authenticationFragmentBody, new AuthorizationFragment());
+                navigationActions.openFragment(R.id.authenticationFragmentBody, new AuthorizationFragment());
                 break;
             case R.id.openSettingsBtn:
-                fragmentsActions.openFragment(R.id.authenticationFragmentBody, new SettingsFragment());
+                navigationActions.openFragment(R.id.authenticationFragmentBody, new SettingsFragment());
                 break;
         }
     }

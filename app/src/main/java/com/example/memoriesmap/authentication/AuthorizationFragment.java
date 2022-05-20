@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,8 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
-import com.example.memoriesmap.FragmentsActions;
-import com.example.memoriesmap.MainActivity;
+import com.example.memoriesmap.NavigationActions;
 import com.example.memoriesmap.R;
 import com.example.memoriesmap.databinding.AuthorizationFragmentBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,7 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class AuthorizationFragment extends Fragment {
 
     private AuthorizationFragmentBinding binding;
-    private FragmentsActions fragmentsActions;
+    private NavigationActions navigationActions;
     private FirebaseAuth mAuth;
 
     private String email;
@@ -53,14 +51,14 @@ public class AuthorizationFragment extends Fragment {
             }
         });
 
-        fragmentsActions.setDisplayHomeVisibility(true);
+        navigationActions.setDisplayHomeVisibility(true);
         return binding.getRoot();
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        fragmentsActions = (FragmentsActions) context;
+        navigationActions = (NavigationActions) context;
     }
 
     public void signIn() {
@@ -73,9 +71,7 @@ public class AuthorizationFragment extends Fragment {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(getActivity(), R.string.welcome, Toast.LENGTH_SHORT).show();
-                    //fragmentsActions.openFragment(new MainWindowFragment());
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    startActivity(intent);
+                    navigationActions.goToOtherActivity();
                 }
                 else {
                     Log.d("RRR", task.getException().getMessage().toString());

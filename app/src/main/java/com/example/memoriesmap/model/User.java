@@ -8,6 +8,8 @@ public class User {
     private String password;
     private ArrayList<Note> notes;
 
+    public User() { }
+
     public User(String name, String email, String password) {
         this.name = name;
         this.email = email;

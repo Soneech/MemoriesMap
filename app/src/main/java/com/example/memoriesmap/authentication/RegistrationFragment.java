@@ -11,12 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.memoriesmap.FragmentsActions;
+import com.example.memoriesmap.NavigationActions;
 import com.example.memoriesmap.R;
 import com.example.memoriesmap.databinding.RegistrationFragmentBinding;
 import com.example.memoriesmap.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class RegistrationFragment extends Fragment{
 
     private RegistrationFragmentBinding binding;
-    private FragmentsActions fragmentsActions;
+    private NavigationActions navigationActions;
 
     private FirebaseAuth auth;
     private FirebaseDatabase database;
@@ -61,7 +60,8 @@ public class RegistrationFragment extends Fragment{
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = RegistrationFragmentBinding.inflate(inflater, container, false);
-        fragmentsActions.setDisplayHomeVisibility(true);
+
+        navigationActions.setDisplayHomeVisibility(true);
         binding.registrationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,7 +81,7 @@ public class RegistrationFragment extends Fragment{
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        fragmentsActions = (FragmentsActions) context;
+        navigationActions = (NavigationActions) context;
     }
 
     public boolean isDataNotNull() {
@@ -132,7 +132,7 @@ public class RegistrationFragment extends Fragment{
                             getActivity(),
                             R.string.successful_registration_toast_text,
                             Toast.LENGTH_SHORT).show();
-                    fragmentsActions.openFragment(R.id.authenticationFragmentBody, new AuthorizationFragment());
+                    navigationActions.openFragment(R.id.authenticationFragmentBody, new AuthorizationFragment());
                 }
                 else {
                     String exception = task.getException().getMessage();
