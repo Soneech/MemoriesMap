@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.memoriesmap.R;
 import com.example.memoriesmap.model.Memory;
@@ -38,8 +39,6 @@ import com.yandex.mapkit.map.InputListener;
 import com.yandex.mapkit.map.Map;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.runtime.image.ImageProvider;
-
-import java.util.Objects;
 
 
 public class MapFragment extends Fragment implements GeoObjectTapListener, InputListener {
@@ -151,7 +150,7 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
                                                 .fromBitmap(placeMarkBitmap)).
                                 addTapListener((mapObject, point) -> {
                                     Log.d("RR1", "tap to placemark");
-                                    showChangeMemoryWindow(memory);
+                                    showDisplayMemoryWindow(memory);
                                     return true;
                                 });
                     }
@@ -174,46 +173,6 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
                         + String.valueOf(tapPoint.getLongitude()).replace(".", ""));
         memoriesDataBase.push().setValue(memory);
         updateMap();
-    }
-
-    public void changeMemory(String memoryTitle, String memoryDate, String memoryText, Memory memory) {
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                    Memory searchMemory = dataSnapshot.getValue(Memory.class);
-
-                    assert searchMemory != null;
-                    if (searchMemory.getPointString().equals(memory.getPointString())) {
-                        memoriesDataBase
-                                .child(memoriesDBName)
-                                .child(Objects.requireNonNull(dataSnapshot.getKey()))
-                                .child("title")
-                                .setValue(memoryTitle);
-                        memoriesDataBase
-                                .child(memoriesDBName)
-                                .child(dataSnapshot.getKey())
-                                .child("date")
-                                .setValue(memoryDate);
-                        memoriesDataBase
-                                .child(memoriesDBName)
-                                .child(dataSnapshot.getKey())
-                                .child("text")
-                                .setValue(memoryText);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        memoriesDataBase.addValueEventListener(valueEventListener);
-
-        memory.setTitle(memoryTitle);
-        memory.setDate(memoryDate);
-        memory.setText(memoryText);
     }
 
     public void showAddingMemoryWindow() {
@@ -246,37 +205,24 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
         dialog.show();
     }
 
-    public void showChangeMemoryWindow(Memory memory) {
+    public void showDisplayMemoryWindow(Memory memory) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-        dialog.setTitle(R.string.change_memory);
+        dialog.setTitle(R.string.display_memory);
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View changeMemoryWindow = inflater.inflate(R.layout.add_memory_window, null);
+        View changeMemoryWindow = inflater.inflate(R.layout.memory_window, null);
         dialog.setView(changeMemoryWindow);
 
-        final EditText memoryTitleEditText = changeMemoryWindow.findViewById(R.id.memoryTitleEditText);
-        final EditText memoryDateEditText = changeMemoryWindow.findViewById(R.id.memoryDateEditText);
-        final TextInputEditText memoryTextEditText = changeMemoryWindow.findViewById(R.id.memoryText);
+        final TextView memoryTitleTextView = changeMemoryWindow.findViewById(R.id.memoryTitleTextView);
+        final TextView memoryDateTextView = changeMemoryWindow.findViewById(R.id.memoryDateTextView);
+        final TextView memoryTextView = changeMemoryWindow.findViewById(R.id.memoryTextView);
 
-        memoryTitleEditText.setText(memory.getTitle());
-        memoryDateEditText.setText(memory.getDate());
-        memoryTextEditText.setText(memory.getText());
+        memoryTitleTextView.setText(memory.getTitle());
+        memoryDateTextView.setText(memory.getDate());
+        memoryTextView.setText(memory.getText());
 
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        dialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String memoryTitle = memoryTitleEditText.getText().toString();
-                String memoryDate = memoryDateEditText.getText().toString();
-                String memoryText = memoryTextEditText.getText().toString();
-                changeMemory(memoryTitle, memoryDate, memoryText, memory);
-            }
-        });
+        dialog.setNegativeButton(R.string.close, (dialogInterface, i)
+                -> dialogInterface.dismiss());
         dialog.show();
     }
 }
