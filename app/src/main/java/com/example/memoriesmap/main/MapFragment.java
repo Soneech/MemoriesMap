@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.memoriesmap.R;
+import com.yandex.mapkit.mapview.MapView;
 
 public class MapFragment extends Fragment {
 

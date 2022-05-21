@@ -1,10 +1,12 @@
 package com.example.memoriesmap.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,7 +14,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.memoriesmap.NavigationActions;
 import com.example.memoriesmap.R;
-import com.example.memoriesmap.databinding.ProfileFragmentBinding;
 import com.example.memoriesmap.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,7 +27,6 @@ import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
 
-    private ProfileFragmentBinding binding;
     private View view;
 
     private FirebaseAuth auth;
@@ -52,19 +52,24 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = ProfileFragmentBinding.inflate(inflater, container, false);
         view = inflater.inflate(R.layout.profile_fragment, container, false);
-        getDataFromDatabase();
+        Button logOutBtn = view.findViewById(R.id.logOutBtn);  //                                   возможно, удастся переделать с binding...
 
-        binding.logOutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                auth.signOut();
-                currentUser = null;
-                navigationActions.goToOtherActivity();
-            }
+        logOutBtn.setOnClickListener(view -> {
+            auth.signOut();
+            currentUser = null;
+            Log.d("RRR", "logout click");
+            navigationActions.goToOtherActivity();
         });
+
+        getDataFromDatabase();
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        navigationActions = (NavigationActions) context;
     }
 
     public void getDataFromDatabase() {
