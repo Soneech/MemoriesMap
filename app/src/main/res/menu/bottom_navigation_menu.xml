@@ -7,7 +7,7 @@
     <item
         android:id="@+id/notes"
         android:icon="@drawable/ic_baseline_notes_24"
-        android:title="@string/notes" />
+        android:title="@string/memories" />
     <item android:title="@string/map"
         android:id="@+id/map"
         android:icon="@drawable/ic_baseline_map_24"/>

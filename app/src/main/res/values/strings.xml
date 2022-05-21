@@ -40,15 +40,15 @@
     <string name="null_data_error">Все поля должны быть заполнены</string>
     <string name="user_doesnt_exist">Такой пользователь не найден</string>
     <string name="action_sign_in">Sign in or register</string>
-    <string name="registration_text_view">Регистрация</string>
-    <string name="authorization_text_view">Авторизация</string>
+    <string name="registration_text_view">Введите данные для регистрации</string>
+    <string name="authorization_text_view">Введите данные для входа</string>
     <string name="authorization_checkbox_text">Запомнить меня</string>
 
     <!-- Strings related to registration -->
     <string name="successful_registration_toast_text">Регистрация прошла успешно</string>
     <string name="unsuccessful_registration_toast_text">Не удалось зарегистрировать пользователя</string>
     <string name="profile">Профиль</string>
-    <string name="notes">Все заметки</string>
+    <string name="memories">Воспоминания</string>
     <string name="map">Карта</string>
     <string name="settings">Настройки</string>
     <string name="title_activity_main">MainActivity</string>

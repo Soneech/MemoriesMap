@@ -1,8 +1,8 @@
 package com.example.memoriesmap;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements NavigationActions
     private final String yandexMapsAPIKey = "5566d26e-22a9-43ad-b081-d76a3c12b22d";
 
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

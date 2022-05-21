@@ -15,12 +15,11 @@ import com.example.memoriesmap.NavigationActions;
 import com.example.memoriesmap.R;
 import com.example.memoriesmap.databinding.RegistrationFragmentBinding;
 import com.example.memoriesmap.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 public class RegistrationFragment extends Fragment{
 
@@ -62,17 +61,14 @@ public class RegistrationFragment extends Fragment{
         binding = RegistrationFragmentBinding.inflate(inflater, container, false);
 
         navigationActions.setDisplayHomeVisibility(true);
-        binding.registrationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isDataNotNull()) {
-                    setData();
-                    if (isDataValid())
-                        signUp();
-                }
-                else {
-                    nullDataError();
-                }
+        binding.registrationBtn.setOnClickListener(view -> {
+            if (isDataNotNull()) {
+                setData();
+                if (isDataValid())
+                    signUp();
+            }
+            else {
+                nullDataError();
             }
         });
         return binding.getRoot();
@@ -122,29 +118,27 @@ public class RegistrationFragment extends Fragment{
     }
 
     public void signUp() {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    User user = new User(username, email, password);
-                    users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
-                    Toast.makeText(
-                            getActivity(),
-                            R.string.successful_registration_toast_text,
-                            Toast.LENGTH_SHORT).show();
-                    navigationActions.openFragment(R.id.authenticationFragmentBody, new AuthorizationFragment());
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                User user = new User(username, email, password);
+                users.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(user);
+                Toast.makeText(
+                        getActivity(),
+                        R.string.successful_registration_toast_text,
+                        Toast.LENGTH_SHORT).show();
+                navigationActions.openFragment(R.id.authenticationFragmentBody, new AuthorizationFragment());
+            }
+            else {
+                String exception = Objects.requireNonNull(task.getException()).getMessage();
+                assert exception != null;
+                if (exception.equals(invalidEmailExceptionMessage)) {
+                    Toast.makeText(getActivity(), R.string.user_already_exist, Toast.LENGTH_LONG).show();
                 }
                 else {
-                    String exception = task.getException().getMessage();
-                    if (exception.equals(invalidEmailExceptionMessage)) {
-                        Toast.makeText(getActivity(), R.string.user_already_exist, Toast.LENGTH_LONG).show();
-                    }
-                    else {
-                        Toast.makeText(
-                                getActivity(),
-                                R.string.unsuccessful_registration_toast_text,
-                                Toast.LENGTH_LONG).show();
-                    }
+                    Toast.makeText(
+                            getActivity(),
+                            R.string.unsuccessful_registration_toast_text,
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });

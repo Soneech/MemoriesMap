@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,8 @@ import android.widget.Toast;
 import com.example.memoriesmap.NavigationActions;
 import com.example.memoriesmap.R;
 import com.example.memoriesmap.databinding.AuthorizationFragmentBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
 
 public class AuthorizationFragment extends Fragment {
 
@@ -29,7 +26,6 @@ public class AuthorizationFragment extends Fragment {
 
     private String email;
     private String password;
-    private boolean rememberMe;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,12 +40,7 @@ public class AuthorizationFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         binding = AuthorizationFragmentBinding.inflate(inflater, container, false);
-        binding.authorizationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signIn();
-            }
-        });
+        binding.authorizationBtn.setOnClickListener(view -> signIn());
 
         navigationActions.setDisplayHomeVisibility(true);
         return binding.getRoot();
@@ -64,19 +55,14 @@ public class AuthorizationFragment extends Fragment {
     public void signIn() {
         email = binding.authEmailEditText.getText().toString();
         password = binding.authPasswordEditText.getText().toString();
-        rememberMe = binding.rememberMeCheckBox.isChecked();
 
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(getActivity(), R.string.welcome, Toast.LENGTH_SHORT).show();
-                    navigationActions.goToOtherActivity();
-                }
-                else {
-                    Log.d("RRR", task.getException().getMessage().toString());
-                    Toast.makeText(getActivity(), R.string.user_doesnt_exist, Toast.LENGTH_LONG).show();
-                }
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(getActivity(), R.string.welcome, Toast.LENGTH_SHORT).show();
+                navigationActions.goToOtherActivity();
+            }
+            else {
+                Toast.makeText(getActivity(), R.string.user_doesnt_exist, Toast.LENGTH_LONG).show();
             }
         });
     }

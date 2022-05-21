@@ -2,7 +2,6 @@ package com.example.memoriesmap.main;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -12,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +37,8 @@ import com.yandex.mapkit.map.InputListener;
 import com.yandex.mapkit.map.Map;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.runtime.image.ImageProvider;
+
+import java.util.Objects;
 
 
 public class MapFragment extends Fragment implements GeoObjectTapListener, InputListener {
@@ -103,9 +103,6 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
     @Override
     public void onMapTap(@NonNull Map map, @NonNull Point point) {
         tapPoint = point;
-        Log.d("RRR", String.valueOf(point.getLatitude()) + " " + String.valueOf(point.getLongitude()));
-        Log.d("RRR", "camera " + String.valueOf(mapView.getMap().getCameraPosition().getZoom()));
-
         showAddingMemoryWindow();
     }
 
@@ -149,7 +146,6 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
                                         ImageProvider
                                                 .fromBitmap(placeMarkBitmap)).
                                 addTapListener((mapObject, point) -> {
-                                    Log.d("RR1", "tap to placemark");
                                     showDisplayMemoryWindow(memory);
                                     return true;
                                 });
@@ -166,7 +162,7 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
     }
 
     public void saveMemory(String memoryTitle, String memoryDate, String memoryText) {
-        String userKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userKey = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         Memory memory = new Memory(
                 memoryTitle, memoryDate, memoryText, tapPoint, userKey,
                 String.valueOf(tapPoint.getLatitude()).replace(".", "")
@@ -187,20 +183,13 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
         final EditText memoryDateEditText = memoryWindow.findViewById(R.id.memoryDateEditText);
         final TextInputEditText memoryTextEditText = memoryWindow.findViewById(R.id.memoryText);
 
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        dialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String memoryTitle = memoryTitleEditText.getText().toString();
-                String memoryDate = memoryDateEditText.getText().toString();
-                String memoryText = memoryTextEditText.getText().toString();
-                saveMemory(memoryTitle, memoryDate, memoryText);
-            }
+        dialog.setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss());
+
+        dialog.setPositiveButton(R.string.save, (dialogInterface, i) -> {
+            String memoryTitle = memoryTitleEditText.getText().toString();
+            String memoryDate = memoryDateEditText.getText().toString();
+            String memoryText = Objects.requireNonNull(memoryTextEditText.getText()).toString();
+            saveMemory(memoryTitle, memoryDate, memoryText);
         });
         dialog.show();
     }

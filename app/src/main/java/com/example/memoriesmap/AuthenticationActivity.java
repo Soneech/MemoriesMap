@@ -2,7 +2,6 @@ package com.example.memoriesmap;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -69,11 +68,9 @@ public class AuthenticationActivity extends AppCompatActivity implements Navigat
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                fragmentManager.popBackStack();
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            fragmentManager.popBackStack();
         }
+        return super.onOptionsItemSelected(item);
     }
 }

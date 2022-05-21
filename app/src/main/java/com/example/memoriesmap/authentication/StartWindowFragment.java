@@ -1,5 +1,6 @@
 package com.example.memoriesmap.authentication;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -27,7 +28,7 @@ public class StartWindowFragment extends Fragment implements View.OnClickListene
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = StartWindowFragmentBinding.inflate(inflater, container, false);
         binding.openRegistrationBtn.setOnClickListener(this);
@@ -43,6 +44,7 @@ public class StartWindowFragment extends Fragment implements View.OnClickListene
         navigationActions = (NavigationActions) context;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
