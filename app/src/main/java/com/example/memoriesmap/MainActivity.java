@@ -9,24 +9,28 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.memoriesmap.api.MapKitInitializer;
 import com.example.memoriesmap.databinding.MainActivityBinding;
 import com.example.memoriesmap.main.MapFragment;
 import com.example.memoriesmap.main.NotesListFragment;
 import com.example.memoriesmap.main.ProfileFragment;
 import com.example.memoriesmap.main.SettingsFragment;
+import com.yandex.mapkit.MapKitFactory;
 
 public class MainActivity extends AppCompatActivity implements NavigationActions {
 
     private MainActivityBinding binding;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
+    private final String yandexMapsAPIKey = "5566d26e-22a9-43ad-b081-d76a3c12b22d";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = MainActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
 
         openFragment(R.id.mainFragmentBody, new ProfileFragment());
 
@@ -49,7 +53,17 @@ public class MainActivity extends AppCompatActivity implements NavigationActions
             }
             return true;
         });
+        initializeMapKit();
+    }
 
+    public void initializeMapKit() {
+        MapKitInitializer mapKitInitializer = new MapKitInitializer();
+
+        if (!mapKitInitializer.getInitialize()) {
+            MapKitFactory.setApiKey(yandexMapsAPIKey);
+            MapKitFactory.initialize(this);
+        }
+        mapKitInitializer.setInitialize();
     }
 
     public FragmentTransaction createFragmentTransaction() {
@@ -68,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements NavigationActions
 
     @Override
     public void goToOtherActivity() {
-        Log.d("RRR", "maint activity -> auth activity");
         Intent intent = new Intent(this, AuthenticationActivity.class);
         this.finish();
         startActivity(intent);

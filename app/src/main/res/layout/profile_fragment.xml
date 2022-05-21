@@ -11,19 +11,19 @@
         android:id="@+id/userNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="168dp"
-        android:textSize="16sp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="60dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/profileTextView" />
 
     <TextView
         android:id="@+id/emailTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="48dp"
         android:layout_marginTop="28dp"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userNameTextView" />
 
@@ -38,5 +38,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/profileTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="96dp"
+        android:text="@string/your_profile"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

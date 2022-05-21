@@ -58,7 +58,6 @@ public class ProfileFragment extends Fragment {
         logOutBtn.setOnClickListener(view -> {
             auth.signOut();
             currentUser = null;
-            Log.d("RRR", "logout click");
             navigationActions.goToOtherActivity();
         });
 

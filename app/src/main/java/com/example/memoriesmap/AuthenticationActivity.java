@@ -31,11 +31,9 @@ public class AuthenticationActivity extends AppCompatActivity implements Navigat
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();  //    ПОЧИНИТЬ
         if (currentUser != null) {
-            Log.d("RRR", "go to auth activity1");
             goToOtherActivity();
         }
         else {
-            Log.d("RRR", "go to auth activity2");
             actionBar = getSupportActionBar();
             openFragment(R.id.authenticationFragmentBody, new StartWindowFragment());
         }

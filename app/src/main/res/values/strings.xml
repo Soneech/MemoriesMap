@@ -63,4 +63,5 @@
     <string name="avatar">avatar</string>
     <string name="example_text">example text</string>
     <string name="log_out">Выйти</string>
+    <string name="your_profile">Ваш профиль</string>
 </resources>
