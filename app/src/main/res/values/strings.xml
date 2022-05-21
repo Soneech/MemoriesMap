@@ -64,4 +64,7 @@
     <string name="example_text">example text</string>
     <string name="log_out">Выйти</string>
     <string name="your_profile">Ваш профиль</string>
+    <string name="memory_title">Заголовок</string>
+    <string name="memory_date">Дата</string>
+    <string name="memory_text">Воспоминание</string>
 </resources>

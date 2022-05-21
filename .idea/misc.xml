@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/Programming/ANDROID/MemoriesMap/app/src/main/res/drawable/ic_baseline_map_24.xml" value="0.2215" />
         <entry key="..\:/Programming/ANDROID/MemoriesMap/app/src/main/res/drawable/ic_baseline_people_alt_24.xml" value="0.2215" />
+        <entry key="..\:/Programming/ANDROID/MemoriesMap/app/src/main/res/drawable/ic_baseline_place_24.xml" value="0.1035" />
+        <entry key="..\:/Programming/ANDROID/MemoriesMap/app/src/main/res/layout/add_memory_window.xml" value="0.25416666666666665" />
         <entry key="..\:/Programming/ANDROID/MemoriesMap/app/src/main/res/layout/authentication_activity.xml" value="0.25416666666666665" />
         <entry key="..\:/Programming/ANDROID/MemoriesMap/app/src/main/res/layout/authorization_fragment.xml" value="0.25416666666666665" />
         <entry key="..\:/Programming/ANDROID/MemoriesMap/app/src/main/res/layout/main_activity.xml" value="0.25416666666666665" />
