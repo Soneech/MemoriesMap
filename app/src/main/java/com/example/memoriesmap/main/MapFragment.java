@@ -21,6 +21,8 @@ import android.widget.EditText;
 
 import com.example.memoriesmap.R;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
@@ -41,12 +43,12 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
     private final float tilt = 0.0f;
 
     private MapView mapView;
-    private EditText titleEditText;
-    private EditText dateEditText;
-    private TextInputEditText memoryTextEditText;
     private View view;
 
     private Point tapPoint;
+
+    private DatabaseReference memoriesDataBase;
+    private final String memoriesDBName = "Memories";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,12 +58,9 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        memoriesDataBase = FirebaseDatabase.getInstance().getReference(memoriesDBName);
 
         view = inflater.inflate(R.layout.map_fragment, container, false);
-
-        titleEditText = view.findViewById(R.id.memoryTitleEditText);
-        dateEditText = view.findViewById(R.id.memoryDateEditText);
-        memoryTextEditText = view.findViewById(R.id.memoryText);
 
         mapView = view.findViewById(R.id.mapView);
         mapView.getMap().move(
@@ -122,19 +121,19 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
     public void showAddingMemoryWindow() {
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-        dialog.setTitle("Добавление воспоминания на карту");
+        dialog.setTitle(R.string.adding_memory_text);
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View memoryWindow = inflater.inflate(R.layout.add_memory_window, null);
         dialog.setView(memoryWindow);
 
-        dialog.setNegativeButton("Отменить", new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });
-        dialog.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 saveMemory();
@@ -144,6 +143,14 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
     }
 
     public void saveMemory() {
+        EditText memoryTitleEditText = view.findViewById(R.id.memoryTitleEditText);
+        EditText memoryDateEditText = view.findViewById(R.id.memoryDateEditText);
+        TextInputEditText memoryTextEditText = view.findViewById(R.id.memoryText);
+
+        String memoryTitle = memoryTitleEditText.getText().toString();
+        String memoryDate = memoryDateEditText.getText().toString();
+        //String memoryText = memoryTextEditText.getText().toString();
+
         mapView
                 .getMap()
                 .getMapObjects()
@@ -153,5 +160,6 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
                                 .fromBitmap(
                                         getBitmapFromVectorDrawable(getContext(),
                                                 R.drawable.ic_baseline_place_24)));
+
     }
 }

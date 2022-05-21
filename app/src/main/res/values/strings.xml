@@ -67,4 +67,8 @@
     <string name="memory_title">Заголовок</string>
     <string name="memory_date">Дата</string>
     <string name="memory_text">Воспоминание</string>
+
+    <string name="adding_memory_text">Добавление воспоминания на карту</string>
+    <string name="cancel">Отменить</string>
+    <string name="save">Сохранить</string>
 </resources>
