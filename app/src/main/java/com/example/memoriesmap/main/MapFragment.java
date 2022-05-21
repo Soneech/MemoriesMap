@@ -6,23 +6,28 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.memoriesmap.R;
+import com.example.memoriesmap.model.Memory;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
@@ -33,6 +38,9 @@ import com.yandex.mapkit.map.InputListener;
 import com.yandex.mapkit.map.Map;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.runtime.image.ImageProvider;
+
+import java.util.Objects;
+
 
 public class MapFragment extends Fragment implements GeoObjectTapListener, InputListener {
 
@@ -70,6 +78,7 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
 
         mapView.getMap().addTapListener(this);
         mapView.getMap().addInputListener(this);
+        updateMap();
         return view;
     }
 
@@ -95,6 +104,9 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
     @Override
     public void onMapTap(@NonNull Map map, @NonNull Point point) {
         tapPoint = point;
+        Log.d("RRR", String.valueOf(point.getLatitude()) + " " + String.valueOf(point.getLongitude()));
+        Log.d("RRR", "camera " + String.valueOf(mapView.getMap().getCameraPosition().getZoom()));
+
         showAddingMemoryWindow();
     }
 
@@ -105,10 +117,8 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
 
     public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
         Drawable drawable = ContextCompat.getDrawable(context, drawableId);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            drawable = (DrawableCompat.wrap(drawable)).mutate();
-        }
 
+        assert drawable != null;
         Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
                 drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -118,14 +128,105 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
         return bitmap;
     }
 
-    public void showAddingMemoryWindow() {
+    public void updateMap() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                    Memory memory = dataSnapshot.getValue(Memory.class);
+                    assert memory != null;
+                    assert currentUser != null;
+                    if (memory.getUserKey().equals(currentUser.getUid())) {
+                        Bitmap placeMarkBitmap = getBitmapFromVectorDrawable(
+                                getContext(),
+                                R.drawable.ic_baseline_place_24);
 
+                        mapView
+                                .getMap()
+                                .getMapObjects()
+                                .addPlacemark(
+                                        memory.getPoint(),
+                                        ImageProvider
+                                                .fromBitmap(placeMarkBitmap)).
+                                addTapListener((mapObject, point) -> {
+                                    Log.d("RR1", "tap to placemark");
+                                    showChangeMemoryWindow(memory);
+                                    return true;
+                                });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        memoriesDataBase.addValueEventListener(valueEventListener);
+    }
+
+    public void saveMemory(String memoryTitle, String memoryDate, String memoryText) {
+        String userKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Memory memory = new Memory(
+                memoryTitle, memoryDate, memoryText, tapPoint, userKey,
+                String.valueOf(tapPoint.getLatitude()).replace(".", "")
+                        + String.valueOf(tapPoint.getLongitude()).replace(".", ""));
+        memoriesDataBase.push().setValue(memory);
+        updateMap();
+    }
+
+    public void changeMemory(String memoryTitle, String memoryDate, String memoryText, Memory memory) {
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                    Memory searchMemory = dataSnapshot.getValue(Memory.class);
+
+                    assert searchMemory != null;
+                    if (searchMemory.getPointString().equals(memory.getPointString())) {
+                        memoriesDataBase
+                                .child(memoriesDBName)
+                                .child(Objects.requireNonNull(dataSnapshot.getKey()))
+                                .child("title")
+                                .setValue(memoryTitle);
+                        memoriesDataBase
+                                .child(memoriesDBName)
+                                .child(dataSnapshot.getKey())
+                                .child("date")
+                                .setValue(memoryDate);
+                        memoriesDataBase
+                                .child(memoriesDBName)
+                                .child(dataSnapshot.getKey())
+                                .child("text")
+                                .setValue(memoryText);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        memoriesDataBase.addValueEventListener(valueEventListener);
+
+        memory.setTitle(memoryTitle);
+        memory.setDate(memoryDate);
+        memory.setText(memoryText);
+    }
+
+    public void showAddingMemoryWindow() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setTitle(R.string.adding_memory_text);
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View memoryWindow = inflater.inflate(R.layout.add_memory_window, null);
         dialog.setView(memoryWindow);
+
+        final EditText memoryTitleEditText = memoryWindow.findViewById(R.id.memoryTitleEditText);
+        final EditText memoryDateEditText = memoryWindow.findViewById(R.id.memoryDateEditText);
+        final TextInputEditText memoryTextEditText = memoryWindow.findViewById(R.id.memoryText);
 
         dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -136,30 +237,46 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
         dialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                saveMemory();
+                String memoryTitle = memoryTitleEditText.getText().toString();
+                String memoryDate = memoryDateEditText.getText().toString();
+                String memoryText = memoryTextEditText.getText().toString();
+                saveMemory(memoryTitle, memoryDate, memoryText);
             }
         });
         dialog.show();
     }
 
-    public void saveMemory() {
-        EditText memoryTitleEditText = view.findViewById(R.id.memoryTitleEditText);
-        EditText memoryDateEditText = view.findViewById(R.id.memoryDateEditText);
-        TextInputEditText memoryTextEditText = view.findViewById(R.id.memoryText);
+    public void showChangeMemoryWindow(Memory memory) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setTitle(R.string.change_memory);
 
-        String memoryTitle = memoryTitleEditText.getText().toString();
-        String memoryDate = memoryDateEditText.getText().toString();
-        //String memoryText = memoryTextEditText.getText().toString();
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View changeMemoryWindow = inflater.inflate(R.layout.add_memory_window, null);
+        dialog.setView(changeMemoryWindow);
 
-        mapView
-                .getMap()
-                .getMapObjects()
-                .addPlacemark(
-                        tapPoint,
-                        ImageProvider
-                                .fromBitmap(
-                                        getBitmapFromVectorDrawable(getContext(),
-                                                R.drawable.ic_baseline_place_24)));
+        final EditText memoryTitleEditText = changeMemoryWindow.findViewById(R.id.memoryTitleEditText);
+        final EditText memoryDateEditText = changeMemoryWindow.findViewById(R.id.memoryDateEditText);
+        final TextInputEditText memoryTextEditText = changeMemoryWindow.findViewById(R.id.memoryText);
 
+        memoryTitleEditText.setText(memory.getTitle());
+        memoryDateEditText.setText(memory.getDate());
+        memoryTextEditText.setText(memory.getText());
+
+        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        dialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String memoryTitle = memoryTitleEditText.getText().toString();
+                String memoryDate = memoryDateEditText.getText().toString();
+                String memoryText = memoryTextEditText.getText().toString();
+                changeMemory(memoryTitle, memoryDate, memoryText, memory);
+            }
+        });
+        dialog.show();
     }
 }

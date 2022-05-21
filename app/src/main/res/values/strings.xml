@@ -71,4 +71,5 @@
     <string name="adding_memory_text">Добавление воспоминания на карту</string>
     <string name="cancel">Отменить</string>
     <string name="save">Сохранить</string>
+    <string name="change_memory">Изменить воспоминание</string>
 </resources>
