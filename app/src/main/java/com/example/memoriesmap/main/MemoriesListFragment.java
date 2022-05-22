@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.memoriesmap.R;
 
-public class NotesListFragment extends Fragment {
+public class MemoriesListFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

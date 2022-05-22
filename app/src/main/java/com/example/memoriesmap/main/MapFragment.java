@@ -163,9 +163,7 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
     public void saveMemory(String memoryTitle, String memoryDate, String memoryText) {
         String userKey = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         Memory memory = new Memory(
-                memoryTitle, memoryDate, memoryText, tapPoint, userKey,
-                String.valueOf(tapPoint.getLatitude()).replace(".", "")
-                        + String.valueOf(tapPoint.getLongitude()).replace(".", ""));
+                memoryTitle, memoryDate, memoryText, tapPoint, userKey);
         memoriesDataBase.push().setValue(memory);
         updateMap();
     }

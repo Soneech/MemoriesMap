@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.memoriesmap.api.MapKitInitializer;
 import com.example.memoriesmap.databinding.MainActivityBinding;
 import com.example.memoriesmap.main.MapFragment;
-import com.example.memoriesmap.main.NotesListFragment;
+import com.example.memoriesmap.main.MemoriesListFragment;
 import com.example.memoriesmap.main.ProfileFragment;
 import com.example.memoriesmap.main.SettingsFragment;
 import com.yandex.mapkit.MapKitFactory;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationActions
                     openFragment(R.id.mainFragmentBody, new ProfileFragment());
                     break;
                 case R.id.notes:
-                    openFragment(R.id.mainFragmentBody, new NotesListFragment());
+                    openFragment(R.id.mainFragmentBody, new MemoriesListFragment());
                     break;
                 case R.id.map:
                     openFragment(R.id.mainFragmentBody, new MapFragment());

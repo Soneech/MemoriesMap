@@ -9,19 +9,16 @@ public class Memory {
     private Point point;
     private String userKey;
 
-    private String pointString;
-
     public Memory() {
 
     }
 
-    public Memory(String title, String date, String text, Point point, String userKey, String pointString) {
+    public Memory(String title, String date, String text, Point point, String userKey) {
         this.title = title;
         this.date = date;
         this.text = text;
         this.point = point;
         this.userKey = userKey;
-        this.pointString = pointString;
     }
 
     public String getTitle() {
@@ -62,13 +59,5 @@ public class Memory {
 
     public void setUserKey(String userKey) {
         this.userKey = userKey;
-    }
-
-    public String getPointString() {
-        return pointString;
-    }
-
-    public void setPointString(String pointString) {
-        this.pointString = pointString;
     }
 }
