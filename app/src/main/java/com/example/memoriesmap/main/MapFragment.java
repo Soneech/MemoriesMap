@@ -137,7 +137,6 @@ public class MapFragment extends Fragment implements GeoObjectTapListener, Input
                         Bitmap placeMarkBitmap = getBitmapFromVectorDrawable(
                                 getContext(),
                                 R.drawable.ic_baseline_place_24);
-
                         mapView
                                 .getMap()
                                 .getMapObjects()

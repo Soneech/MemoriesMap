@@ -6,7 +6,6 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private ArrayList<Memory> notes;
 
     public User() { }
 
@@ -14,7 +13,6 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.notes = new ArrayList<>();
     }
 
     public String getName() {
@@ -39,13 +37,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public ArrayList<Memory> getNotes() {
-        return notes;
-    }
-
-    public void setNotes(ArrayList<Memory> notes) {
-        this.notes = notes;
     }
 }

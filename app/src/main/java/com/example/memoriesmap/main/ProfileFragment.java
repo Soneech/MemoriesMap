@@ -75,7 +75,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                    if (Objects.equals(dataSnapshot.getKey(), currentUser.getUid())) {
+                    if (dataSnapshot.getKey().equals(currentUser.getUid())) {
                         user = dataSnapshot.getValue(User.class);
                         displayUserData();
                     }
